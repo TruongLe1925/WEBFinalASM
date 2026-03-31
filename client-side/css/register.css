@@ -1,0 +1,39 @@
+/* 1. Tổng thể nền: Sử dụng màu cam đặc trưng của đồ ăn nhanh */
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+.bg-image {
+    /* Gradient từ cam đậm sang cam sáng giúp trang có chiều sâu */
+    background: linear-gradient(135deg, #f46b45 0%, #eea849 100%) !important;
+    background-size: cover;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+/* 2. Lớp mặt nạ (Mask): Thêm một chút họa tiết để không bị đơn điệu */
+.mask.gradient-custom-3 {
+    background: url('https://www.transparenttextures.com/patterns/food.png'); /* Họa tiết đồ ăn ẩn dưới nền */
+    width: 100%;
+}
+
+/* 3. Card đăng ký: Kiểu Glassmorphism nhẹ hoặc Trắng tinh khôi */
+.card {
+    border: none !important;
+    border-radius: 20px !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2) !important;
+    background: rgba(255, 255, 255, 0.95) !important; /* Trắng mờ nhẹ */
+}
+
+.card-body {
+    padding: 2.5rem !important;
+}
+
+/* 4. Tiêu đề */
+h2.text-uppercase {
+    color: #d35400; /* Màu đỏ cam đậm */
+    font-weight:
+

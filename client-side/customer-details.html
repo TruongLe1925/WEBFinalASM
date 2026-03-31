@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Hồ sơ người dùng - FoodieDash</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root { --primary: #ff6b35; }
+        .profile-header { background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-bottom: 1px solid #dee2e6; }
+        .default-avatar { width: 100px; height: 100px; border-radius: 50%; }
+        .info-label { color: #6c757d; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .sidebar-link { display: block; padding: 10px 15px; color: #495057; text-decoration: none; border-radius: 8px; }
+        .sidebar-link:hover, .sidebar-link.active { background-color: #e9ecef; color: var(--primary); }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-white bg-white border-bottom sticky-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" style="color: var(--primary);" href="index.html"><i class="bi bi-egg-fried"></i> FoodieDash</a>
+            <div class="ms-auto"><span class="me-2 d-none d-sm-inline">Chào, <strong id="navUserName">User</strong></span></div>
+        </div>
+    </nav>
+
+    <main class="container my-4">
+        <div class="row g-4">
+            <aside class="col-lg-3">
+                <div class="card border-0 shadow-sm p-2">
+                    <a href="customer-details.html" class="sidebar-link active"><i class="bi bi-person"></i> Hồ sơ của tôi</a>
+                    <a href="order-history.html" class="sidebar-link"><i class="bi bi-clock-history"></i> Lịch sử đơn hàng</a>
+                    <hr class="my-2">
+                    <button onclick="handleLogout()" class="sidebar-link border-0 bg-transparent w-100 text-danger text-start"><i class="bi bi-box-arrow-left"></i> Đăng xuất</button>
+                </div>
+            </aside>
+
+            <div class="col-lg-9">
+                <div id="alertMessage"></div>
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="profile-header d-flex justify-content-center py-3">
+                        <div class="default-avatar bg-secondary d-flex align-items-center justify-content-center me-3"><i class="bi bi-person fs-1 text-white"></i></div>
+                    </div>
+                    <div class="px-4 pb-4">
+                        <div class="d-flex flex-column flex-md-row align-items-center align-items-md-end gap-3 text-center text-md-start">
+                            <div class="flex-grow-1"><h3 id="profileName" class="mb-0 fw-bold">User</h3></div>
+                            <button class="btn btn-primary px-4" style="background-color: var(--primary); border: none;" data-bs-toggle="modal" data-bs-target="#modalSuaHoSo"><i class="bi bi-pencil"></i> Sửa hồ sơ</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow-sm p-4">
+                    <h5 class="fw-bold mb-4"><i class="bi bi-info-circle text-primary"></i> Thông tin cá nhân</h5>
+                    <div class="row g-4">
+                        <div class="col-md-6"><div class="info-label">Họ và tên</div><div id="userFullName" class="fw-bold fs-5">-</div></div>
+                        <div class="col-md-6"><div class="info-label">EMAIL</div><div id="userEmail" class="fw-bold fs-5">-</div></div>
+                        <div class="col-md-6"><div class="info-label">SỐ ĐIỆN THOẠI</div><div id="userPhone" class="fw-bold fs-5">-</div></div>
+                        <div class="col-md-6"><div class="info-label">ĐỊA CHỈ</div><div id="userAddress" class="fw-bold">-</div></div>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow-sm mt-4 overflow-hidden">
+                    <div class="p-3 bg-danger bg-opacity-10 d-flex justify-content-between align-items-center">
+                        <div><h6 class="mb-0 fw-bold text-danger">Xóa tài khoản</h6><small class="text-muted">Mọi dữ liệu sẽ bị xóa vĩnh viễn.</small></div>
+                        <button class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalXoaTaiKhoan">Xóa ngay</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal fade" id="modalSuaHoSo" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header"><h5 class="modal-title">Cập nhật thông tin cá nhân</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+                <div class="modal-body">
+                    <form id="editProfileForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-3"><label class="form-label">Họ và tên</label><input type="text" class="form-control" id="editFullName" required></div>
+                            <div class="col-md-6 mb-3"><label class="form-label">Email</label><input type="email" class="form-control" id="editEmail" required></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3"><label class="form-label">Số điện thoại</label><input type="text" class="form-control" id="editPhone"></div>
+                            <div class="col-md-6 mb-3"><label class="form-label">Địa chỉ</label><input type="text" class="form-control" id="editAddress"></div>
+                        </div>
+                        <div class="text-end mt-3">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                            <button type="submit" class="btn btn-primary" style="background-color: #ff6b35; border: none;">Lưu thay đổi</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalXoaTaiKhoan" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-0"><h5 class="modal-title text-danger"><i class="bi bi-exclamation-triangle-fill"></i> Xác nhận xóa</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+                <div class="modal-body text-center">
+                    <p>Bạn có chắc chắn muốn xóa tài khoản này không?</p>
+                    <p class="text-muted small">Mọi dữ liệu của bạn sẽ bị xóa vĩnh viễn.</p>
+                </div>
+                <div class="modal-footer border-0 justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy bỏ</button>
+                    <button type="button" onclick="confirmDeleteAccount()" class="btn btn-danger">Tôi xác nhận xóa</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        if (!isLoggedIn()) window.location.href = 'login.html';
+
+        function handleLogout() {
+            logout();
+            window.location.href = 'index.html';
+        }
+
+        function loadUserProfile() {
+            const user = getCurrentUser();
+            if (!user) return;
+            document.getElementById('navUserName').textContent = user.fullName;
+            document.getElementById('profileName').textContent = user.fullName;
+            document.getElementById('userFullName').textContent = user.fullName;
+            document.getElementById('userEmail').textContent = user.email;
+            document.getElementById('userPhone').textContent = user.phoneNumber || '-';
+            document.getElementById('userAddress').textContent = user.address || '-';
+            document.getElementById('editFullName').value = user.fullName;
+            document.getElementById('editEmail').value = user.email;
+            document.getElementById('editPhone').value = user.phoneNumber || '';
+            document.getElementById('editAddress').value = user.address || '';
+        }
+
+        document.getElementById('editProfileForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const userData = {
+                fullName: document.getElementById('editFullName').value,
+                email: document.getElementById('editEmail').value,
+                phoneNumber: document.getElementById('editPhone').value,
+                address: document.getElementById('editAddress').value
+            };
+            const result = updateProfile(userData);
+            if (result.success) {
+                showAlert('success', result.message);
+                bootstrap.Modal.getInstance(document.getElementById('modalSuaHoSo')).hide();
+                loadUserProfile();
+            } else {
+                showAlert('danger', result.message);
+            }
+        });
+
+        function confirmDeleteAccount() {
+            const result = deleteAccount();
+            if (result.success) {
+                alert('Tài khoản đã được xóa!');
+                window.location.href = 'index.html';
+            } else {
+                showAlert('danger', result.message);
+            }
+        }
+
+        function showAlert(type, message) {
+            document.getElementById('alertMessage').innerHTML = `<div class="alert alert-${type} alert-dismissible fade show" role="alert">${message}<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>`;
+        }
+
+        document.addEventListener('DOMContentLoaded', loadUserProfile);
+    </script>
+</body>
+</html>

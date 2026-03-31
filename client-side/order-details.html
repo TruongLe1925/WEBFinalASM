@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Chi tiết đơn hàng - FoodieDash</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root { --primary: #ff6b35; }
+        body { background-color: #f4f7f6; font-family: 'Inter', system-ui, sans-serif; }
+        .order-card { border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); background: #fff; }
+        .product-img { width: 64px; height: 64px; object-fit: cover; border-radius: 8px; }
+        .status-badge { padding: 6px 16px; border-radius: 50px; font-size: 0.8rem; font-weight: 700; }
+        .status-pending { background-color: #fff3cd; color: #856404; }
+        .status-confirmed { background-color: #d1ecf1; color: #0c5460; }
+        .status-delivered { background-color: #d4edda; color: #155724; }
+        .status-cancelled { background-color: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+        <div class="container">
+            <a class="navbar-brand fw-bold" style="color: var(--primary);" href="index.html"><i class="bi bi-egg-fried"></i> FoodieDash</a>
+            <div class="ms-auto"><a href="order-history.html" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-left"></i> Quay lại</a></div>
+        </div>
+    </nav>
+
+    <div class="container py-5">
+        <div id="notFound" class="text-center py-5 d-none">
+            <i class="bi bi-exclamation-circle" style="font-size: 3rem; color: #6c757d;"></i>
+            <p class="mt-3 text-muted">Không tìm thấy đơn hàng</p>
+            <a href="order-history.html" class="btn btn-primary mt-2">Quay lại lịch sử</a>
+        </div>
+
+        <div id="orderContent">
+            <div class="mb-4"><a href="order-history.html" class="text-decoration-none text-secondary fw-medium"><i class="bi bi-chevron-left"></i> Quay lại lịch sử đơn hàng</a></div>
+            <div class="row g-4">
+                <div class="col-lg-8">
+                    <div class="card order-card overflow-hidden">
+                        <div class="card-header bg-white py-4 px-4 d-flex justify-content-between align-items-center border-bottom-0">
+                            <div>
+                                <h4 class="mb-1 fw-bold">Mã đơn: <span id="orderId" class="text-primary">#ORD-000</span></h4>
+                                <p class="text-muted small mb-0">Thời gian: <span id="orderDate">-</span></p>
+                            </div>
+                            <span id="orderStatus" class="status-badge status-pending"><i class="bi bi-circle-fill me-1" style="font-size: 8px;"></i><span>Chờ xử lý</span></span>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table align-middle">
+                                <thead><tr><th class="ps-4">Món ăn</th><th class="text-center">Số lượng</th><th class="text-end pe-4">Đơn giá</th></tr></thead>
+                                <tbody id="orderItems"></tbody>
+                            </table>
+                        </div>
+                        <div class="card-footer bg-white border-top p-4">
+                            <div class="row justify-content-end">
+                                <div class="col-md-5">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="fw-bold fs-5">Tổng cộng:</span>
+                                        <span id="grandTotal" class="fw-bold fs-3 text-primary">0 đ</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="card order-card p-4 mb-4">
+                        <h6 class="fw-bold mb-3"><i class="bi bi-geo-alt-fill text-primary me-2"></i>Giao đến</h6>
+                        <div id="customerName" class="fw-bold mb-1">-</div>
+                        <div id="customerPhone" class="text-muted small mb-3">-</div>
+                        <div class="p-3 bg-light rounded-3 small text-secondary border"><span id="customerAddress">-</span></div>
+                    </div>
+                    <div class="card order-card p-4">
+                        <h6 class="fw-bold mb-3"><i class="bi bi-credit-card-fill text-primary me-2"></i>Thanh toán</h6>
+                        <div class="d-flex align-items-center mb-4"><span class="badge bg-success-subtle text-success border border-success-subtle py-2 px-3 w-100">Tiền mặt (COD)</span></div>
+                        <div id="actionButtons" class="d-grid gap-2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="cancelModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-body text-center p-5">
+                    <div class="text-danger mb-3"><i class="bi bi-exclamation-triangle-fill" style="font-size: 3.5rem;"></i></div>
+                    <h4 class="fw-bold">Xác nhận hủy đơn?</h4>
+                    <p class="text-muted small">Bạn chỉ có thể hủy đơn khi đơn hàng chưa được xử lý.</p>
+                    <div class="d-flex gap-2 justify-content-center mt-4">
+                        <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Quay lại</button>
+                        <button type="button" onclick="confirmCancel()" class="btn btn-danger px-4 shadow-sm">Tôi muốn hủy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="py-5 bg-dark mt-auto">
+        <div class="container"><p class="m-0 text-center text-white">Copyright &copy; FoodieDash 2024</p></div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        let currentOrderId = null;
+        if (!isLoggedIn()) window.location.href = 'login.html';
+
+        function formatPrice(price) {
+            return price.toLocaleString('vi-VN') + ' đ';
+        }
+
+        function formatDate(dateString) {
+            return new Date(dateString).toLocaleString('vi-VN');
+        }
+
+        function getStatusBadge(status) {
+            const statusMap = {
+                'PENDING': { class: 'status-pending', text: 'Chờ xử lý' },
+                'CONFIRMED': { class: 'status-confirmed', text: 'Đã xác nhận' },
+                'DELIVERED': { class: 'status-delivered', text: 'Đã giao' },
+                'CANCELLED': { class: 'status-cancelled', text: 'Đã hủy' }
+            };
+            return statusMap[status] || { class: 'status-pending', text: status };
+        }
+
+        function renderOrder() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const orderId = urlParams.get('id');
+            currentOrderId = orderId;
+
+            if (!orderId) {
+                document.getElementById('notFound').classList.remove('d-none');
+                document.getElementById('orderContent').classList.add('d-none');
+                return;
+            }
+
+            const order = getOrderById(orderId);
+            if (!order) {
+                document.getElementById('notFound').classList.remove('d-none');
+                document.getElementById('orderContent').classList.add('d-none');
+                return;
+            }
+
+            document.getElementById('orderId').textContent = '#' + order.orderId;
+            document.getElementById('orderDate').textContent = formatDate(order.orderDate);
+
+            const statusInfo = getStatusBadge(order.status);
+            const statusBadge = document.getElementById('orderStatus');
+            statusBadge.className = 'status-badge ' + statusInfo.class;
+            statusBadge.innerHTML = `<i class="bi bi-circle-fill me-1" style="font-size: 8px;"></i><span>${statusInfo.text}</span>`;
+
+            document.getElementById('orderItems').innerHTML = order.items.map(item => `
+                <tr>
+                    <td class="ps-4 py-3">
+                        <div class="d-flex align-items-center">
+                            <img src="${item.imageUrl}" class="product-img border me-3" alt="${item.productName}">
+                            <div><div class="fw-bold text-dark">${item.productName}</div><div class="small text-muted">${formatPrice(item.totalPrice)}</div></div>
+                        </div>
+                    </td>
+                    <td class="text-center fw-bold">${item.quantity}</td>
+                    <td class="text-end pe-4 fw-bold">${formatPrice(item.totalPrice * item.quantity)}</td>
+                </tr>
+            `).join('');
+
+            const total = order.discountTotalPrice || order.totalPrice;
+            document.getElementById('grandTotal').textContent = formatPrice(total);
+            document.getElementById('customerName').textContent = order.customerName;
+            document.getElementById('customerPhone').textContent = order.customerPhone;
+            document.getElementById('customerAddress').textContent = order.customerAddress;
+
+            const actionButtons = document.getElementById('actionButtons');
+            if (order.status === 'PENDING') {
+                actionButtons.innerHTML = `<button type="button" class="btn btn-outline-danger py-2 fw-bold" data-bs-toggle="modal" data-bs-target="#cancelModal">Hủy đơn hàng</button>`;
+            } else if (order.status === 'CANCELLED') {
+                actionButtons.innerHTML = `<div class="alert alert-danger mb-0 text-center py-2 fw-bold">ĐƠN HÀNG ĐÃ HỦY</div>`;
+            } else {
+                actionButtons.innerHTML = `<div class="alert alert-info mb-0 text-center py-2 fw-bold">ĐƠN ĐANG XỬ LÝ</div>`;
+            }
+        }
+
+        function confirmCancel() {
+            if (!currentOrderId) return;
+            const result = cancelOrder(currentOrderId);
+            if (result.success) {
+                bootstrap.Modal.getInstance(document.getElementById('cancelModal')).hide();
+                alert('Đơn hàng đã được hủy thành công!');
+                renderOrder();
+            } else {
+                alert(result.message);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', renderOrder);
+    </script>
+</body>
+</html>

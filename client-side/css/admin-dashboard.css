@@ -1,0 +1,57 @@
+body { background-color: #f4f7f6; }
+        /* Tùy chỉnh màu sắc cho Navbar Admin */
+        .admin-nav { background-color: #2c3e50; }
+        .admin-nav .nav-link { color: rgba(255,255,255,0.8) !important; transition: 0.3s; margin: 0 5px; }
+        .admin-nav .nav-link:hover, .admin-nav .nav-link.active { color: #fff !important; background: #34495e; border-radius: 5px; }
+        .stat-card { border: none; border-radius: 15px; transition: transform 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .stat-card:hover { transform: translateY(-5px); }
+        /* Container chứa các coupon */
+        .coupon-card {
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05));
+            transition: transform 0.2s;
+        }
+
+        .coupon-card:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Phần bên trái của tấm vé */
+        .coupon-left {
+            width: 70px;
+            border-radius: 10px 0 0 10px;
+            position: relative;
+        }
+
+        /* Phần bên phải của tấm vé */
+        .coupon-right {
+            border-radius: 0 10px 10px 0;
+            border: 1px solid #eee;
+            border-left: none;
+        }
+
+        /* Hiệu ứng đường đứt đoạn giữa vé */
+        .border-dashed {
+            border-left: 2px dashed #f1f1f1 !important;
+        }
+
+        /* Màu nền nhẹ cho badge */
+        .bg-soft-success {
+            background-color: #e8fadf;
+        }
+
+        /* Tạo "vết cắt" hình tròn đặc trưng của vé giảm giá */
+        .coupon-card {
+            position: relative;
+        }
+        .coupon-card::before, .coupon-card::after {
+            content: "";
+            position: absolute;
+            left: 62px; /* Khớp với vị trí đường đứt đoạn */
+            width: 16px;
+            height: 16px;
+            background-color: #f8f9fa; /* Trùng với màu nền của Card cha */
+            border-radius: 50%;
+            z-index: 2;
+        }
+        .coupon-card::before { top: -8px; }
+        .coupon-card::after { bottom: -8px; }

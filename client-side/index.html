@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>FoodieDash - Cửa hàng ẩm thực</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="css/index.css" rel="stylesheet">
+    <style>
+        .card { border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; transition: all 0.3s ease; background-color: #fff; }
+        .card:hover { border-color: #ffc107; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); transform: translateY(-5px); }
+        .product-img-fixed { width: 100%; height: 200px; object-fit: cover; border-bottom: 1px solid #eee; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container px-4 px-lg-5">
+            <a class="navbar-brand" href="index.html"><i class="bi bi-egg-fried"></i> FoodieDash</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                    <li class="nav-item"><a class="nav-link active" href="index.html">Trang chủ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Giới thiệu</a></li>
+                </ul>
+                <form class="d-flex">
+                    <div id="customerNav" class="d-none">
+                        <a href="shopping-cart.html" class="btn btn-outline-dark"><i class="bi-cart-fill me-1"></i> Giỏ hàng</a>
+                        <a href="customer-details.html" class="btn btn-outline-dark ms-2"><i class="bi-person-fill"></i></a>
+                    </div>
+                    <div id="authNav" class="d-flex align-items-center">
+                        <a href="login.html" class="btn btn-outline-dark ms-2"><i class="bi-box-arrow-in-right"></i> Đăng nhập</a>
+                        <a href="register.html" class="btn btn-outline-dark ms-2"><i class="bi bi-person-plus"></i> Đăng ký</a>
+                    </div>
+                    <div id="userNav" class="d-none d-flex align-items-center">
+                        <span id="userName" class="me-2"></span>
+                        <button onclick="handleLogout()" class="btn btn-outline-danger ms-2"><i class="bi bi-box-arrow-left"></i> Đăng xuất</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <header class="position-relative overflow-hidden py-5" style="min-height: 400px;">
+        <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-50" style="z-index: 0;"></div>
+        <div class="container px-4 px-lg-5 my-5 position-relative" style="z-index: 1;">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">FoodieDash</h1>
+                <p class="lead fw-normal text-white-50 mb-0">Ẩm thực Việt - Hương vị truyền thống</p>
+            </div>
+        </div>
+    </header>
+
+    <section class="py-5">
+        <div class="container px-4 px-lg-5 mt-5">
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center" id="productList">
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-5 bg-dark">
+        <div class="container"><p class="m-0 text-center text-white">Copyright &copy; FoodieDash 2024</p></div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        const PRODUCTS = [
+            { productName: "Gà Lắc Phô Mai", productPrice: 65000, imageUrl: "images/1773429491999_ga-lac-pho-mai.jpg", description: "Gà giòn lắc phô mai béo ngậy" },
+            { productName: "Bánh Mì Đặc Biệt", productPrice: 35000, imageUrl: "images/1773598565473_Banh-Mi_HERO.webp", description: "Bánh mì giòn tan nhân đầy đặn" },
+            { productName: "Trà Đào", productPrice: 25000, imageUrl: "images/1773714700045_ly-tra-dao-0b4abead.jpg", description: "Trà đào mát lạnh giải khát" },
+            { productName: "Cơm Gà Xối Mỡ", productPrice: 55000, imageUrl: "images/Com-Ga-Xoi-Mo-77-1.jpg", description: "Cơm gà xối mỡ Sài Gòn" },
+            { productName: "Gà Rán KFC", productPrice: 75000, imageUrl: "images/cach-chien-ga-kfc-5.webp", description: "Gà rán giòn rụm kiểu KFC" },
+            { productName: "Khô Gà Lá Chanh", productPrice: 45000, imageUrl: "images/cach-lam-kho-ga-6.jpg", description: "Khô gà cay giòn lá chanh" },
+            { productName: "Combo Đặc Biệt", productPrice: 95000, imageUrl: "images/thumnail.webp", description: "Combo ăn no nê tiết kiệm" },
+            { productName: "Bánh Mì Thập Cẩm", productPrice: 40000, imageUrl: "images/1773598565473_Banh-Mi_HERO.webp", description: "Bánh mì nhiều nhân" }
+        ];
+
+        function updateNavigation() {
+            const customerNav = document.getElementById('customerNav');
+            const authNav = document.getElementById('authNav');
+            const userNav = document.getElementById('userNav');
+            const userName = document.getElementById('userName');
+
+            if (isLoggedIn()) {
+                const user = getCurrentUser();
+                customerNav.classList.remove('d-none');
+                authNav.classList.add('d-none');
+                userNav.classList.remove('d-none');
+                userName.textContent = 'Xin chào, ' + user.fullName;
+            } else {
+                customerNav.classList.add('d-none');
+                authNav.classList.remove('d-none');
+                userNav.classList.add('d-none');
+            }
+        }
+
+        function handleLogout() {
+            logout();
+            window.location.href = 'index.html';
+        }
+
+        function formatPrice(price) {
+            return price.toLocaleString('vi-VN') + ' đ';
+        }
+
+        function renderProducts() {
+            const productList = document.getElementById('productList');
+            const loggedIn = isLoggedIn();
+
+            productList.innerHTML = PRODUCTS.map(product => `
+                <div class="col mb-5">
+                    <div class="card h-100">
+                        <img class="card-img-top product-img-fixed" src="${product.imageUrl}" alt="${product.productName}">
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <h5 class="fw-bolder">${product.productName}</h5>
+                                <p>${formatPrice(product.productPrice)}</p>
+                            </div>
+                        </div>
+                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                            ${loggedIn ? `
+                                <div class="text-center">
+                                    <button onclick='addToCartItem(${JSON.stringify(product)})' class="btn btn-outline-dark mt-auto">Thêm vào giỏ</button>
+                                </div>
+                            ` : `
+                                <div class="text-center">
+                                    <a href="login.html" class="btn btn-outline-primary mt-auto">Đăng nhập để mua</a>
+                                </div>
+                            `}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addToCartItem(product) {
+            const cartItem = {
+                productName: product.productName,
+                totalPrice: product.productPrice,
+                imageUrl: product.imageUrl,
+                description: product.description,
+                quantity: 1
+            };
+            const result = addToCart(cartItem);
+            if (result.success) alert('Đã thêm sản phẩm vào giỏ hàng!');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateNavigation();
+            renderProducts();
+        });
+    </script>
+</body>
+</html>
