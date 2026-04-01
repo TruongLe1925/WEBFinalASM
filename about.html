@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Giới Thiệu - FoodieDash</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="css/index.css" rel="stylesheet">
+    <style>
+        .about-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+        .about-section {
+            padding: 40px 0;
+        }
+        .about-content {
+            line-height: 1.8;
+            font-size: 16px;
+            color: #555;
+        }
+        .feature-card {
+            text-align: center;
+            padding: 30px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover {
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+        }
+        .feature-card i {
+            font-size: 40px;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+        .timeline-item {
+            margin-bottom: 40px;
+            padding-left: 80px;
+            position: relative;
+        }
+        .timeline-item::before {
+            content: '';
+            width: 20px;
+            height: 20px;
+            background-color: #667eea;
+            border-radius: 50%;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        .timeline-item::after {
+            content: '';
+            width: 2px;
+            height: 100%;
+            background-color: #ddd;
+            position: absolute;
+            left: 9px;
+            top: 20px;
+        }
+        .timeline-item:last-child::after {
+            display: none;
+        }
+        .timeline-date {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container px-4 px-lg-5">
+            <a class="navbar-brand" href="index.html"><i class="bi bi-egg-fried"></i> FoodieDash</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Trang chủ</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="about.html">Giới thiệu</a></li>
+                </ul>
+                <form class="d-flex">
+                    <div id="customerNav" class="d-none">
+                        <a href="shopping-cart.html" class="btn btn-outline-dark"><i class="bi-cart-fill me-1"></i> Giỏ hàng</a>
+                        <a href="customer-details.html" class="btn btn-outline-dark ms-2"><i class="bi-person-fill"></i></a>
+                    </div>
+                    <div id="authNav" class="d-flex align-items-center">
+                        <a href="login.html" class="btn btn-outline-dark ms-2"><i class="bi-box-arrow-in-right"></i> Đăng nhập</a>
+                        <a href="register.html" class="btn btn-outline-dark ms-2"><i class="bi bi-person-plus"></i> Đăng ký</a>
+                    </div>
+                    <div id="userNav" class="d-none d-flex align-items-center">
+                        <span id="userName" class="me-2"></span>
+                        <button onclick="handleLogout()" class="btn btn-outline-danger ms-2"><i class="bi bi-box-arrow-left"></i> Đăng xuất</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="about-hero">
+        <div class="container">
+            <h1 class="display-4 mb-4">Về FoodieDash</h1>
+            <p class="lead">Mang tinh hoa ẩm thực Việt đến tay bạn nhanh chóng và chất lượng</p>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section">
+        <div class="container px-4 px-lg-5">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="mb-4">Câu Chuyện Của Chúng Tôi</h2>
+                    <div class="about-content">
+                        <p>FoodieDash được thành lập vào năm 2024 với tôn chỉ đơn giản: mang những món ăn ngon nhất từ các nhà hàng, quán ăn uy tín đến tay khách hàng một cách nhanh chóng và tiện lợi.</p>
+                        
+                        <p>Chúng tôi tin rằng mỗi khách hàng đều xứng đáng được thưởng thức những món ăn tươi ngon, được chế biến từ nguyên liệu tốt nhất. Với đội ngũ giao hàng chuyên nghiệp và hệ thống quản lý hiệu quả, chúng tôi cam kết đem đến cho bạn trải nghiệm mua sắm ẩm thực tốt nhất.</p>
+
+                        <p>Từ những năm đầu với chỉ vài quán ăn, FoodieDash đã phát triển thành nền tảng giao hàng được yêu thích bởi hàng ngàn khách hàng trên khắp thành phố.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vision & Mission -->
+    <section class="about-section bg-light">
+        <div class="container px-4 px-lg-5">
+            <h2 class="text-center mb-5">Tầm Nhìn & Sứ Mệnh</h2>
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="feature-card">
+                        <i class="bi bi-eye"></i>
+                        <h5 class="mb-3">Tầm Nhìn</h5>
+                        <p>Trở thành nền tảng giao hàng ứng dụng số 1 tại Việt Nam, nơi mà mỗi khách hàng có thể dễ dàng tiếp cận các món ăn chất lượng cao từ những nhà cung cấp đáng tin cậy.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <div class="feature-card">
+                        <i class="bi bi-target"></i>
+                        <h5 class="mb-3">Sứ Mệnh</h5>
+                        <p>Cung cấp dịch vụ giao hàng nhanh, an toàn và chất lượng cao, tạo ra giá trị cho khách hàng, đối tác kinh doanh và cộng đồng.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Values -->
+    <section class="about-section">
+        <div class="container px-4 px-lg-5">
+            <h2 class="text-center mb-5">Giá Trị Cốt Lõi</h2>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card">
+                        <i class="bi bi-lightning-fill"></i>
+                        <h5 class="mb-3">Nhanh Chóng</h5>
+                        <p>Giao hàng trong thời gian nhanh nhất, đảm bảo thức ăn luôn nóng hổi khi đến tay bạn.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card">
+                        <i class="bi bi-shield-check"></i>
+                        <h5 class="mb-3">Đáng Tin Cậy</h5>
+                        <p>Tất cả sản phẩm đều được kiểm định chất lượng kỹ lưỡng trước khi giao đến bạn.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card">
+                        <i class="bi bi-heart-fill"></i>
+                        <h5 class="mb-3">Chăm Sóc Khách Hàng</h5>
+                        <p>Luôn lắng nghe và phục vụ khách hàng tận tâm, giải quyết mọi vấn đề nhanh chóng.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section class="about-section bg-light">
+        <div class="container px-4 px-lg-5">
+            <h2 class="text-center mb-5">Tại Sao Chọn FoodieDash?</h2>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <div class="d-flex mb-3">
+                        <div class="me-3">
+                            <i class="bi bi-check-circle-fill" style="font-size: 24px; color: #667eea;"></i>
+                        </div>
+                        <div>
+                            <h6>Đa Dạng Lựa Chọn</h6>
+                            <p class="mb-0">Hàng trăm nhà hàng và quán ăn đang chờ bạn khám phá</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="d-flex mb-3">
+                        <div class="me-3">
+                            <i class="bi bi-check-circle-fill" style="font-size: 24px; color: #667eea;"></i>
+                        </div>
+                        <div>
+                            <h6>Giá Cạnh Tranh</h6>
+                            <p class="mb-0">Giá tốt nhất với chất lượng đảm bảo</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="d-flex mb-3">
+                        <div class="me-3">
+                            <i class="bi bi-check-circle-fill" style="font-size: 24px; color: #667eea;"></i>
+                        </div>
+                        <div>
+                            <h6>Giao Hàng Nhanh</h6>
+                            <p class="mb-0">Trung bình 30-45 phút giao đến tay bạn</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="d-flex mb-3">
+                        <div class="me-3">
+                            <i class="bi bi-check-circle-fill" style="font-size: 24px; color: #667eea;"></i>
+                        </div>
+                        <div>
+                            <h6>Khuyến Mãi Hấp Dẫn</h6>
+                            <p class="mb-0">Nhiều chương trình khuyến mãi và mã coupon đặc biệt</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="d-flex mb-3">
+                        <div class="me-3">
+                            <i class="bi bi-check-circle-fill" style="font-size: 24px; color: #667eea;"></i>
+                        </div>
+                        <div>
+                            <h6>An Toàn & Vệ Sinh</h6>
+                            <p class="mb-0">Tuân thủ tiêu chuẩn vệ sinh thực phẩm quốc tế</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="d-flex mb-3">
+                        <div class="me-3">
+                            <i class="bi bi-check-circle-fill" style="font-size: 24px; color: #667eea;"></i>
+                        </div>
+                        <div>
+                            <h6>Hỗ Trợ 24/7</h6>
+                            <p class="mb-0">Đội tư vấn khách hàng luôn sẵn sàng giúp đỡ</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline -->
+    <section class="about-section">
+        <div class="container px-4 px-lg-5">
+            <h2 class="text-center mb-5">Hành Trình Phát Triển</h2>
+            <div class="col-lg-8 mx-auto">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-date">2024 - Q1</div>
+                        <h5>Thành Lập FoodieDash</h5>
+                        <p>Bắt đầu hoạt động với 5 nhà hàng đối tác tại thành phố</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2024 - Q2</div>
+                        <h5>Mở Rộng Mạng Lưới</h5>
+                        <p>Tăng lên 25 nhà hàng đối tác, phục vụ 5.000+ khách hàng</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2024 - Q3</div>
+                        <h5>Ra Mắt Ứng Dụng Di Động</h5>
+                        <p>Phát hành ứng dụng trên iOS và Android, nâng cao trải nghiệm người dùng</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2024 - Q4</div>
+                        <h5>Đạt Mục Tiêu</h5>
+                        <p>Phục vụ hơn 50.000 khách hàng, hợp tác với hơn 100 nhà hàng</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="about-section bg-light">
+        <div class="container px-4 px-lg-5">
+            <h2 class="text-center mb-5">Liên Hệ Chúng Tôi</h2>
+            <div class="row">
+                <div class="col-md-4 text-center mb-4">
+                    <div class="feature-card">
+                        <i class="bi bi-telephone"></i>
+                        <h5 class="mb-3">Điện Thoại</h5>
+                        <p>1900 1000</p>
+                    </div>
+                </div>
+                <div class="col-md-4 text-center mb-4">
+                    <div class="feature-card">
+                        <i class="bi bi-envelope"></i>
+                        <h5 class="mb-3">Email</h5>
+                        <p>support@foodiedash.vn</p>
+                    </div>
+                </div>
+                <div class="col-md-4 text-center mb-4">
+                    <div class="feature-card">
+                        <i class="bi bi-geo-alt"></i>
+                        <h5 class="mb-3">Địa Chỉ</h5>
+                        <p>123 Đường ABC, Quận 1, TP.HCM</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-5 bg-dark">
+        <div class="container"><p class="m-0 text-center text-white">Copyright &copy; FoodieDash 2024</p></div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        function updateNavigation() {
+            const customerNav = document.getElementById('customerNav');
+            const authNav = document.getElementById('authNav');
+            const userNav = document.getElementById('userNav');
+            const userName = document.getElementById('userName');
+
+            if (isLoggedIn()) {
+                const user = getCurrentUser();
+                customerNav.classList.remove('d-none');
+                authNav.classList.add('d-none');
+                userNav.classList.remove('d-none');
+                userName.textContent = 'Xin chào, ' + user.fullName;
+            } else {
+                customerNav.classList.add('d-none');
+                authNav.classList.remove('d-none');
+                userNav.classList.add('d-none');
+            }
+        }
+
+        function handleLogout() {
+            logout();
+            window.location.href = 'index.html';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateNavigation();
+        });
+    </script>
+</body>
+</html>
