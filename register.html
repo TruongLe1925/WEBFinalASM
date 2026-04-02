@@ -33,21 +33,29 @@
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Họ và tên</label>
-                                        <input type="text" class="form-control" id="fullName" placeholder="Họ và tên" required/>
+                                        <input type="text" class="form-control" id="fullName" placeholder="Họ và tên" minlength="3" maxlength="50" required/>
+                                        <small class="text-muted">Từ 3-50 ký tự</small>
+                                        <div id="fullNameError" class="text-danger small d-none"></div>
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Tên đăng nhập</label>
-                                        <input type="text" class="form-control" id="username" placeholder="Tên đăng nhập" required/>
+                                        <input type="text" class="form-control" id="username" placeholder="Tên đăng nhập" minlength="4" maxlength="20" pattern="[a-zA-Z0-9_]+" required/>
+                                        <small class="text-muted">4-20 ký tự (chữ, số, _)</small>
+                                        <div id="usernameError" class="text-danger small d-none"></div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Email</label>
                                         <input type="email" class="form-control" id="email" placeholder="Email" required/>
+                                        <small class="text-muted">Nhập email hợp lệ</small>
+                                        <div id="emailError" class="text-danger small d-none"></div>
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Số điện thoại</label>
-                                        <input type="tel" class="form-control" id="phoneNumber" placeholder="Số điện thoại" required/>
+                                        <input type="tel" class="form-control" id="phoneNumber" placeholder="Số điện thoại" pattern="[0-9]{10}" required/>
+                                        <small class="text-muted">10 chữ số</small>
+                                        <div id="phoneError" class="text-danger small d-none"></div>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -55,18 +63,23 @@
                                         <label class="form-label">Địa chỉ</label>
                                         <div class="input-group">
                                             <span class="input-group-text"><i class="fa-solid fa-location-dot"></i></span>
-                                            <input type="text" class="form-control" id="address" placeholder="Nhập địa chỉ của bạn"/>
+                                            <input type="text" class="form-control" id="address" placeholder="Nhập địa chỉ của bạn" minlength="5" maxlength="100" required/>
                                         </div>
+                                        <small class="text-muted">5-100 ký tự</small>
+                                        <div id="addressError" class="text-danger small d-none"></div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Mật khẩu</label>
-                                        <input type="password" class="form-control" id="password" placeholder="Mật khẩu" required/>
+                                        <input type="password" class="form-control" id="password" placeholder="Mật khẩu" minlength="6" required/>
+                                        <small class="text-muted">Tối thiểu 6 ký tự, gợi ý: kết hợp chữ + số + ký tự đặc biệt</small>
+                                        <div id="passwordError" class="text-danger small d-none"></div>
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Nhập lại mật khẩu</label>
                                         <input type="password" class="form-control" id="confirmPassword" placeholder="Nhập lại mật khẩu" required/>
+                                        <div id="confirmPasswordError" class="text-danger small d-none"></div>
                                     </div>
                                 </div>
                                 <div class="form-check d-flex justify-content-center mb-4 mt-2">
@@ -92,34 +105,194 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/auth.js"></script>
     <script>
+        // Validation functions
+        function validateFullName(fullName) {
+            if (!fullName || fullName.trim().length === 0) {
+                return 'Vui lòng nhập họ và tên';
+            }
+            if (fullName.trim().length < 3) {
+                return 'Họ và tên phải có ít nhất 3 ký tự';
+            }
+            if (fullName.trim().length > 50) {
+                return 'Họ và tên không được vượt quá 50 ký tự';
+            }
+            if (!/^[a-zA-Z0-9\s\u0100-\u017F\u0180-\u024F]+$/.test(fullName)) {
+                return 'Họ và tên chỉ được chứa chữ và số';
+            }
+            return '';
+        }
+
+        function validateUsername(username) {
+            if (!username || username.trim().length === 0) {
+                return 'Vui lòng nhập tên đăng nhập';
+            }
+            if (username.trim().length < 4) {
+                return 'Tên đăng nhập phải có ít nhất 4 ký tự';
+            }
+            if (username.trim().length > 20) {
+                return 'Tên đăng nhập không được vượt quá 20 ký tự';
+            }
+            if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+                return 'Tên đăng nhập chỉ được chứa chữ, số và dấu gạch dưới';
+            }
+            return '';
+        }
+
+        function validateEmail(email) {
+            if (!email || email.trim().length === 0) {
+                return 'Vui lòng nhập email';
+            }
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                return 'Email không hợp lệ';
+            }
+            return '';
+        }
+
+        function validatePhoneNumber(phoneNumber) {
+            if (!phoneNumber || phoneNumber.trim().length === 0) {
+                return 'Vui lòng nhập số điện thoại';
+            }
+            if (!/^[0-9]{10}$/.test(phoneNumber.replace(/\s/g, ''))) {
+                return 'Số điện thoại phải có 10 chữ số';
+            }
+            return '';
+        }
+
+        function validateAddress(address) {
+            if (!address || address.trim().length === 0) {
+                return 'Vui lòng nhập địa chỉ';
+            }
+            if (address.trim().length < 5) {
+                return 'Địa chỉ phải có ít nhất 5 ký tự';
+            }
+            if (address.trim().length > 100) {
+                return 'Địa chỉ không được vượt quá 100 ký tự';
+            }
+            return '';
+        }
+
+        function validatePassword(password) {
+            if (!password || password.length === 0) {
+                return 'Vui lòng nhập mật khẩu';
+            }
+            if (password.length < 6) {
+                return 'Mật khẩu phải có ít nhất 6 ký tự';
+            }
+            return '';
+        }
+
+        function validateConfirmPassword(password, confirmPassword) {
+            if (!confirmPassword || confirmPassword.length === 0) {
+                return 'Vui lòng xác nhận mật khẩu';
+            }
+            if (password !== confirmPassword) {
+                return 'Mật khẩu không khớp!';
+            }
+            return '';
+        }
+
+        function clearErrors() {
+            document.getElementById('fullNameError').classList.add('d-none');
+            document.getElementById('usernameError').classList.add('d-none');
+            document.getElementById('emailError').classList.add('d-none');
+            document.getElementById('phoneError').classList.add('d-none');
+            document.getElementById('addressError').classList.add('d-none');
+            document.getElementById('passwordError').classList.add('d-none');
+            document.getElementById('confirmPasswordError').classList.add('d-none');
+        }
+
+        function showError(fieldId, message) {
+            const errorElement = document.getElementById(fieldId + 'Error');
+            if (errorElement) {
+                errorElement.textContent = message;
+                errorElement.classList.remove('d-none');
+            }
+        }
+
         document.getElementById('registerForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const errorDiv = document.getElementById('errorMessage');
             const successDiv = document.getElementById('successMessage');
+            clearErrors();
             errorDiv.classList.add('d-none');
             successDiv.classList.add('d-none');
 
+            // Get form values
+            const fullName = document.getElementById('fullName').value;
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            const address = document.getElementById('address').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const termsCheck = document.getElementById('terms').checked;
+
+            // Validate all fields
+            let hasError = false;
+
+            const fullNameError = validateFullName(fullName);
+            if (fullNameError) {
+                showError('fullName', fullNameError);
+                hasError = true;
+            }
+
+            const usernameError = validateUsername(username);
+            if (usernameError) {
+                showError('username', usernameError);
+                hasError = true;
+            }
+
+            const emailError = validateEmail(email);
+            if (emailError) {
+                showError('email', emailError);
+                hasError = true;
+            }
+
+            const phoneError = validatePhoneNumber(phoneNumber);
+            if (phoneError) {
+                showError('phone', phoneError);
+                hasError = true;
+            }
+
+            const addressError = validateAddress(address);
+            if (addressError) {
+                showError('address', addressError);
+                hasError = true;
+            }
+
+            const passwordError = validatePassword(password);
+            if (passwordError) {
+                showError('password', passwordError);
+                hasError = true;
+            }
+
+            const confirmPasswordError = validateConfirmPassword(password, confirmPassword);
+            if (confirmPasswordError) {
+                showError('confirmPassword', confirmPasswordError);
+                hasError = true;
+            }
+
+            if (!termsCheck) {
+                errorDiv.textContent = 'Vui lòng đồng ý với Điều khoản sử dụng';
+                errorDiv.classList.remove('d-none');
+                hasError = true;
+            }
+
+            if (hasError) {
+                return;
+            }
+
+            // If all validations pass, proceed with registration
             const userData = {
-                fullName: document.getElementById('fullName').value,
-                username: document.getElementById('username').value,
-                email: document.getElementById('email').value,
-                phoneNumber: document.getElementById('phoneNumber').value,
-                address: document.getElementById('address').value,
-                password: document.getElementById('password').value,
-                confirmPassword: document.getElementById('confirmPassword').value
+                fullName: fullName,
+                username: username,
+                email: email,
+                phoneNumber: phoneNumber,
+                address: address,
+                password: password,
+                confirmPassword: confirmPassword
             };
-
-            if (userData.password !== userData.confirmPassword) {
-                errorDiv.textContent = 'Mật khẩu không khớp!';
-                errorDiv.classList.remove('d-none');
-                return;
-            }
-
-            if (userData.password.length < 6) {
-                errorDiv.textContent = 'Mật khẩu phải có ít nhất 6 ký tự!';
-                errorDiv.classList.remove('d-none');
-                return;
-            }
 
             const result = register(userData);
             if (result.success) {
