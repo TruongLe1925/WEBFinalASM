@@ -56,19 +56,26 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/auth.js"></script>
     <script>
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const result = login(username, password);
-            if (result.success) {
-                window.location.href = 'index.html';
-            } else {
-                const errorDiv = document.getElementById('errorMessage');
-                errorDiv.textContent = result.message;
-                errorDiv.classList.remove('d-none');
-            }
-        });
-    </script>
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const errorDiv = document.getElementById('errorMessage');
+
+        if (username === "" || password === "") {
+            errorDiv.textContent = "Không được để trống tên đăng nhập hoặc mật khẩu!";
+            errorDiv.classList.remove('d-none');
+            return;
+        }
+
+        const result = login(username, password);
+        if (result.success) {
+            window.location.href = 'index.html';
+        } else {
+            errorDiv.textContent = result.message;
+            errorDiv.classList.remove('d-none');
+        }
+    });
+</script>
 </body>
 </html>
